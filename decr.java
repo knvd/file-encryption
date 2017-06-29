@@ -73,11 +73,29 @@ public class decr {
 		    	
 			
 	    	 System.out.println("\nFile DECRYPTED Successfully!");
-	    	 	
-	    	 File tmp = new File("dtmp.txt");	//delete the temporary file
-	    	 tmp.delete();
-	    
-	    	 //release resources
+		
+		
+	    	//DELETE THE TEMPORARY FILE 	
+	    		 File f1 = new File("dtmp.txt");	
+	    	 if(f1.delete())
+	    	 {
+	    		 System.out.println("Useless Temporary files deleted to save memory");
+	    	 }
+	    	 else 
+	    	 {
+	    		 System.out.println("Couldn't Locate Temp file to delete!");
+	    	 }
+
+	    	 File f2 = new File("enc.txt");		//DELETE THE ENCRYPTED FILE AFTER DECRYPTION
+	    	 if(f2.delete())
+	    	 {
+	    		 System.out.println("Encrypted file deleted after decryption!");
+	    	 }
+	    	 else 
+	    	 {
+	    		 System.out.println("Couldn't Locate encrypted file to delete!");
+	    	 }
+	    	 //RELEASE ALL RESOURCES
 	    	 in.close();
 	    	 out.close();
 	    	 temp.close();
