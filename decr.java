@@ -18,12 +18,11 @@ public class decr {
 
 	    	long incount=in.length();			//length() returns long
 	    	System.out.println("No of characters in file:"+incount);
-	    		
-	    	
+ 	
 	    	
 	    	Scanner scanner =new Scanner(System.in);
-			System.out.println("Enter Your Key to decrypt the file: ");
-			String key=scanner.nextLine();
+		System.out.println("Enter Your Key to decrypt the file: ");
+		String key=scanner.nextLine();
 			
 		    	//USING KEY
 			
@@ -31,21 +30,19 @@ public class decr {
 			System.out.println("The Length of key is:"+len);
 			int sum= 0;
 			for(int i=0; i<=len-1;i++)
-			{
-				int k=key.charAt(i);
-				
-				sum = sum + k;		
-
-			}
+				{
+					int k=key.charAt(i);
+					sum = sum + k;		
+				}
 			//DEcrypt using key
 			int chr=0;
 			
 			for(int j=0; j<=incount-1;j++)
-			{
-				chr=in.read();
-				temp.write(chr^sum);		//Same XOR(^) to Decrypt
-			}
-			long count=temp.length(); 
+				{
+					chr=in.read();
+					temp.write(chr^sum);		//Same XOR(^) to Decrypt
+				}
+				long count=temp.length(); 
 
 			//APLLY DESHUFFLING
 		    
@@ -53,30 +50,28 @@ public class decr {
 		    	for(long i=count-1;i>=0;i--)	//Reverse Loop
 				{
 		    			//PERCENTAGE LOGIC >>
-		    		long m=incount-1;
+					long m=incount-1;
 					double per = (p*100.0)/m; 
-			        per = per * 100;
-			        per = Math.round(per);
-			        per = per/100;
-			        System.out.println("Decrypting characters to File:"+per + "%");
-		    		
+					per = per * 100;
+					per = Math.round(per);
+					per = per/100;
+					System.out.println("Decrypting characters to File:"+per + "%");
+
 		    		
 		    		    //Writing on file>>
-		    		 temp.seek(i);		//set cursor of TEMP file at last >> i=count-1
-					 out.seek(p);		//set cursor of output file to start >> p=0
+		    			temp.seek(i);		//set cursor of TEMP file at last >> i=count-1
+					out.seek(p);		//set cursor of output file to start >> p=0
 					int ch =temp.read(); //read() from TEMP
 					out.write(ch);		//write it at start of output file
 					
 					 p=p+1;				
-				}
-		    	
-		    	
-			
+				}	
 	    	 System.out.println("\nFile DECRYPTED Successfully!");
-		 	
-	    	 File f1 = new File("dtmp.txt");	//delete the temporary file
-	    	 File f2 = new File("enc.txt");	//DELETE THE ENCRYPTED FILE AFTER DECRYPTION
-	    	 if(f1.delete()&&f2.delete())
+
+		
+	    	 File f1 = new File("dtmp.txt");	
+	    	 File f2 = new File("enc.txt");	
+	    	 if(f1.delete()&&f2.delete())	//delete the temporary file and Encrypted file after decryption
 	    	 {
 	    		 System.out.println("Useless Temporary files deleted to save Memory!");
 	    	 }
