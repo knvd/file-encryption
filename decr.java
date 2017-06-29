@@ -1,4 +1,5 @@
-
+//GO THROUGH THE encr.java CODE FIRST.
+//Code by Naveed Jeelani,Please give feedback if it was useful
 import java.io.IOException;
 import java.io.File;
 import java.io.RandomAccessFile;
