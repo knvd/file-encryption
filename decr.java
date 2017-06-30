@@ -1,6 +1,7 @@
 //GO THROUGH THE encr.java CODE FIRST.
 //Code by Naveed Jeelani,Please give feedback if it was useful
 
+	
 import java.io.IOException;
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -13,27 +14,42 @@ public class decr {
     {
     	try{
 			//Get Filename from USER to be Decrypted
-			Scanner fnamescanner =new Scanner(System.in);
-			System.out.println("Enter Name of the Encrypted File that is to be Decrypted:");
-		    String filename = fnamescanner.next();
-
-
-		    File chk = new File(filename);	//File Handler to check if any file of that name exists			
-if(!chk.exists())	
-	{
-		System.out.println("The File [" +filename+"] doesnot exist.Check Again!");	
-	}
-else
-	{
-			 //Get Original Extension for decryption
+			boolean ans1;	
+			String filename;
+		do
+		{			
+			Scanner filescanner =new Scanner(System.in);
+			System.out.println("Enter Name of the Encrypted File that is to be Decrypted(include path if outside):");
+			filename = filescanner.next();
+	        File filechk = new File(filename);
+	        ans1=!filechk.isFile();		//check if it is valid FILE
+	        if(ans1) System.out.println("'"+filename+"'"+" is not a Valid FILE!");
+		}while(ans1);
+    		
+		
+    			 //Get Original Extension for Decryption
 		    Scanner extscanner =new Scanner(System.in);
 			System.out.println("Enter EXTENSION to which file is to be Decrypted(e.g txt,pdf,jpg,mp3,mp4,etc):");
 		    String extname = extscanner.next();
 		    extname=extname.substring(extname.lastIndexOf(".") + 1);	//if user provided a '.' with extension
-    		
+   
+	 		//Get Directory name where Decrypted file will be saved
+				boolean ans;	//To Store value of !dirchk.isDirectory()
+				String dirname;
+			do
+			{			
+				Scanner dirscanner =new Scanner(System.in);
+				System.out.println("Enter Name of Directory where Decrypted file will be Stored:");
+				dirname = dirscanner.next();
+		        File dirchk = new File(dirname);
+		        ans=!dirchk.isDirectory();	//check if it is valid DIRECTORY	
+		        if(ans) System.out.println("'"+dirname+"'"+" is not a Valid Directory. Check Again!");
+			}while(ans);   
+		       
+		    
     		RandomAccessFile in = new RandomAccessFile(filename, "rw");
-	    	RandomAccessFile temp = new RandomAccessFile("dtmp.txt", "rw");
-	    	RandomAccessFile out = new RandomAccessFile("dec."+extname, "rw");
+	    	RandomAccessFile temp = new RandomAccessFile(dirname+"/dtmp.txt", "rw");
+	    	RandomAccessFile out = new RandomAccessFile(dirname+"/dec."+extname, "rw");
 
 	    	long incount=in.length();			//length() returns long
 	    	System.out.println("No of characters in file:"+incount);
@@ -41,13 +57,13 @@ else
 	    	
 	    		//Get Unique Private Key from USER to decrypt
 	    	Scanner keyscanner =new Scanner(System.in);
-			System.out.println("Enter Your Key to decrypt the file: ");
+			System.out.println("Enter Your DECRYPTION KEY to decrypt the file: ");
 			String key=keyscanner.nextLine();
 			
 			//Calculating Sum of the Key
 			
 			int len = key.length();
-			System.out.println("The Length of key is:"+len);
+			//System.out.println("The Length of key is:"+len);
 			int sum= 0;
 			for(int i=0; i<=len-1;i++)
 			{
@@ -89,10 +105,10 @@ else
 		    	
 		    	
 			
-	    	 System.out.println("\nFile DECRYPTED Successfully!");
+	    	 System.out.println("\nFile DECRYPTED Successfully as dec."+extname+", Stored at "+"'"+dirname+"'");
 	    	 	
-	    	 File f1 = new File("dtmp.txt");	//delete the temporary file
-	    	 File f2 = new File("enc.txt");	//DELETE THE ENCRYPTED FILE AFTER DECRYPTION
+	    	 File f1 = new File(dirname+"/dtmp.txt");	//delete the temporary file
+	    	 File f2 = new File(dirname+"/enc.txt");	//DELETE THE ENCRYPTED FILE AFTER DECRYPTION
 	    	 if(f1.delete()&&f2.delete())
 	    	 {
 	    		 System.out.println("Useless Temporary files deleted to save Memory!");
@@ -107,13 +123,12 @@ else
 	    	 out.close();
 	    	 temp.close();
 	    	 keyscanner.close();
-	    	 fnamescanner.close();
-	    	 extscanner.close();
+	      	 extscanner.close();
 	    	 
 	    	 
 		        
 	    	}
-    }
+ 
 catch ( IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
