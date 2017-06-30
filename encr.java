@@ -9,21 +9,38 @@ class encr
     public static void main(String[] args) 
     {
     	try{
-    				//Get Filename from USER to be Encrypted
-    		Scanner fnamescanner =new Scanner(System.in);
-    		System.out.println("Enter Name of the File to be Encrypted:");
-            String filename = fnamescanner.next();
 
-    		File chk = new File(filename);	//File Handler to check if any file of that name exists			
-	if(!chk.exists())	
-		{
-				System.out.println("The File [" +filename+"] doesnot exist.Check Again!");	
-		}
-	else
-		{
-    		RandomAccessFile in = new RandomAccessFile(filename, "rw");  //input file to be encrypted 
+        	//Get Filename from USER to be Encrypted
+			boolean ans1;	
+			String filename;
+		do
+		{			
+			Scanner filescanner =new Scanner(System.in);
+			System.out.println("Enter Name of the File to be Encrypted:(include path if outside)");
+			filename = filescanner.next();
+	        File filechk = new File(filename);
+	        ans1=!filechk.isFile();				//check if it is valid FILE
+	        if(ans1) System.out.println("'"+filename+"'"+" is not a Valid FILE!");	        
+		}while(ans1);
+            
+      		//Get Directory name where Encrypted file will be saved
+			boolean ans;	//To Store value of !dirchk.isDirectory()
+			String dirname;
+		do
+		{			
+			Scanner dirscanner =new Scanner(System.in);
+			System.out.println("Enter Name of Directory where Encrypted file will be Stored:");
+			dirname = dirscanner.next();
+	        File dirchk = new File(dirname);
+	        ans=!dirchk.isDirectory();		//check if it is valid DIRECTORY
+	        if(ans) System.out.println("'"+dirname+"'"+" is not a Valid Directory!");
+		}while(ans);   
+	       
+	       
+		
+			RandomAccessFile in = new RandomAccessFile(filename, "rw");  //input file to be encrypted 
 	    	RandomAccessFile temp = new RandomAccessFile("tmp.txt", "rw"); //use as intermediate, to hold the file XOR-ed with key
-	    	RandomAccessFile out = new RandomAccessFile("enc.txt", "rw"); // used to hold the shuffled the XOR-ed file
+	    	RandomAccessFile out = new RandomAccessFile(dirname+"/enc.txt", "rw"); // used to hold the shuffled the XOR-ed file
 
 	    	long incount=in.length();		//length() returns long    
 	    	System.out.println("No of characters in file:"+incount);
@@ -31,12 +48,12 @@ class encr
 	    	
 	    	//Get Desired Private Key from USER
 	    	Scanner keyscanner =new Scanner(System.in);
-			System.out.println("Enter Your Key to encrypt the file: ");
+			System.out.println("Enter Your Key to encrypt the file(REMEMBER it for Decryption): ");
 			String key=keyscanner.nextLine();
 	
 				//Calculating Sum of the Key
 			int len = key.length();
-			System.out.println("The Length of key is:"+len);
+			//System.out.println("The Length of key is:"+len);
 			int sum= 0;
 			for(int i=0; i<=len-1;i++)
 			{
@@ -77,10 +94,9 @@ class encr
 				 p=p+1;				//increment p
 			}
 	    	
-	    	 System.out.println("\nFile ENCRYPTED Successfully!");
-	    	 System.out.println("Encrypted File name is 'enc.txt'");
-
-	    	 
+	    	 System.out.println("\nFile ENCRYPTED Successfully as 'enc.txt', Stored at"+"'"+dirname+"'");
+	    
+	     
 	    	//delete the TEMP file
 	    	 File tmp = new File("tmp.txt");	
 	    	 tmp.delete();	
@@ -89,12 +105,12 @@ class encr
 	    	 in.close();
 	    	 out.close();
 	    	 temp.close();
-	    	 fnamescanner.close();
 	    	 keyscanner.close();
+	    	 
 		
 		        
 	    	}
-    	}
+    	
 	catch ( IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
